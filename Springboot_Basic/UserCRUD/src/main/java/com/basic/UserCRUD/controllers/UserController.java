@@ -1,46 +1,45 @@
 package com.basic.UserCRUD.controllers;
 
-import com.basic.UserCRUD.models.UserModel;
-import com.basic.UserCRUD.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.basic.UserCRUD.dtos.UserDTOs;
+import com.basic.UserCRUD.services.UserServices;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping(path = "/users")
 public class UserController {
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @GetMapping("/users")
-    public List<UserModel> getAllUsers() {
-        return userRepository.findAll();
+    public UserController(UserServices userServices) {
+        this.userServices = userServices;
     }
 
-    @GetMapping("/users/{id}")
-    public UserModel getUser(@PathVariable int id) {
-        return userRepository.findById(id).get();
+    private final UserServices userServices;
+
+    @GetMapping
+    public List<UserDTOs> getAllUsers() {
+        return userServices.getAllUsers();
     }
 
-    @PostMapping("/users/add")
+    @GetMapping("/{id}")
+    public UserDTOs getUser(@PathVariable int id) {
+        return userServices.getUserById(id);
+    }
+
+    @PostMapping("/add")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void addUser(@RequestBody UserModel userDetail) {
-        userRepository.save(userDetail);
+    public void addUser(@RequestBody UserDTOs userDTOs) {
+        userServices.addUser(userDTOs);
     }
 
-    @PutMapping("/users/update/{id}")
-    public UserModel updateUser(@PathVariable int id) {
-        UserModel userDetails = userRepository.findById(id).get();
-        userDetails.setContact_no("4444444444");
-        userRepository.save(userDetails);
-        return userDetails;
+    @PutMapping("/update/{id}")
+    public UserDTOs updateUser(@PathVariable int id) {
+       return userServices.updateUser(id);
     }
 
-    @DeleteMapping("/users/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteUser(@PathVariable int id) {
-        UserModel userDetails = userRepository.findById(id).get();
-        userRepository.delete(userDetails);
+        userServices.deleteUser(id);
     }
 }
