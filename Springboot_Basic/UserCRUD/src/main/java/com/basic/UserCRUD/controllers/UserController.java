@@ -2,6 +2,7 @@ package com.basic.UserCRUD.controllers;
 
 import com.basic.UserCRUD.dtos.UserDTOs;
 import com.basic.UserCRUD.services.UserServices;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,7 @@ public class UserController {
 
     @PostMapping("/add")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void addUser(@RequestBody UserDTOs userDTOs) {
+    public void addUser(@Valid @RequestBody UserDTOs userDTOs) {
         userServices.addUser(userDTOs);
     }
 
