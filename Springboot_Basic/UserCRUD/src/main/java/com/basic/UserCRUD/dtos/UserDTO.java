@@ -8,20 +8,28 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTOs {
-    @JsonProperty("id")
+public class UserDTO {
     private int id;
+
     @NotBlank(message = "Name must not be blank")
-    @JsonProperty("name")
     private String name;
+
     @Email(message = "Invalid email format")
     @NotBlank(message = "Email is required")
-    @JsonProperty("email")
     private String email;
+
     @NotNull(message = "Contact No. is required")
     @JsonProperty("contact_no")
-    private String contact_no;
+    private String contactNo;
+
+    @JsonProperty("created_at")
+    private Date createdAt;
+
+    @JsonProperty("updated_at")
+    private Date updatedAt;
 }
